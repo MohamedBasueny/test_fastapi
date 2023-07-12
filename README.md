@@ -1,54 +1,48 @@
 # Booking app
 
-## Шаги для запуска приложения
+Steps to launch the application
 
-1. Скопируй репозиторий    
-```git clone https://github.com/Alexandrhub/test_fastapi.git```
-2. Перейди в папку ```cd test_fastapi```, скопируй файлы конфигурации
-```cd .env.example .env-non-dev``` и заполни их.
-3. Выбери своё виртуальное окружение и запусти команду ```make install-deps``` для установки всех зависимостей.
-4. Для запуска миграций ```make migrate```
-5. Линтеры и форматтеры ```make black``` и ```make flake8```
-6. Для локального запуска введи команду ```make run ```
-7. При проблемах с запуском попробуйте команду ```make clean```
-8. Для запуска всех сервисов (БД, Redis, веб-сервер (FastAPI), Celery, Flower, Grafana, Prometheus) необходимо использовать файл docker-compose.yml и команды ```make up ``` или ```make down``` 
-для запуска и остановки соответственно
+    1.Copy the repository
+    2.git clone https://github.com/Alexandrhub/test_fastapi.git
+    3.Go to the cd test_fastapi folder, copy the configuration files cd .env.example .env-non-dev and fill them in.
+    4.Choose your virtual environment and run the make install-deps command to install all dependencies.
+    5.To run make migrate
+    6.Linters and formatter make black and make flake8
+    7. For local startup, enter the make run command 
+    8.For startup problems, try the make clean command
+    9.To start all services (DB, Redis, web server (FastAPI), Celery, Flower, Grafana, Prometheus) use the docker-compose.yml file and the make up or make down commands to start and stop respectively
 
 
 
 ### Celery & Flower
-Для запуска Celery используется команда  
-```
-celery --app=app.tasks.celery:celery worker -l INFO -P solo
-```
-Обратите внимание, что `-P solo` используется только на Windows, так как у Celery есть проблемы с работой на Windows.  
-Для запуска Flower используется команда  
-```
-celery --app=app.tasks.celery:celery flower
-``` 
+The command used to start Celery is
 
-Они уже включены в настройки запуска докер контейнера
+celery --app=app.tasks.celery:celery worker -l INFO -P solo
+
+Note that -P solo is only used on Windows, as Celery has problems running on Windows.
+The command used to start Flower is
+
+celery --app=app.tasks.celery:celery flower
+These are already included in the docker container startup settings
 
 ### Dockerfile
-Если вы меняли что-то внутри Dockerfile, то есть меняли логику составления образа
-Запустите команду ```docker build .```
+If you have changed something inside Dockerfile, that is, changed the logic for composing the image Run the docker build command .
+Sentry
 
+To configure logging, register on the off.site or google/github Select the framework of your project and copy sentry_dns that you are offered and enter it in the .env-non-dev file.
 ### Sentry
-Для настройки логирования зарегистрируйтесь на [офф.сайте](https://sentry.io/welcome/) или зайдите через гугл/гитхаб
-Выберите фреймворк своего проекта и скопируйте sentry_dns, который вам предложат и введите его в .env-non-dev файл.
+To configure logging, register on the off.site or google/github Select your project framework and copy the sentry_dns you are prompted for and enter it in the .env-non-dev file.
 
 
 ### Grafana / Prometheus
-[Гайд по настройке](https://grafana.com//tutorials/grafana-fundamentals/)
+(https://grafana.com//tutorials/grafana-fundamentals/)
 
-1. Для входа в кабинет нужно указать ```username: admin, password: admin```
-2. Потом переопределить пароль
-3. Чтобы заработали графики вы должны в grafana-dashboard указать свой uid в следующем куске кода:
-```"datasource":{"type": "prometheus","uid": "ВАШ UID"} ```
-4. Взять его можно из json-схемы предустановленных дашбордов  
-   (в настройках add data source -> prometheus -> "выбираем имя").
-Затем в Dashboards -> import -> Вставляем содержимое grafana-dashboard.json и выбираем какой-нибудь случайный uuid(и имя для дашборда)
-5. Если не интересуют метрики / логирование можно отключить закоментировав строчки с sentry и instumentator в файле app/main.py и docker-compose
+To enter the cabinet you need to specify username: admin, password: admin
+    Then override the password
+    To make the charts work you have to specify your uid in grafana-dashboard in the following piece of code: "datasource":{"type": "prometheus", "uid": "YOUR UID"} 
+    You can get it from the json schema of the preset dashboards
+    (in settings add data source -> prometheus -> "choose name"). Then in Dashboards -> import -> Paste the contents of grafana-dashboard.json and choose some random uuid(and name for the dashboard)
+    If you don't care about metrics / logging you can disable it by commenting out the sentry and instumentator lines in app/main.py and docker-compose file
 
 ### Документация
 
